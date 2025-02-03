@@ -79,7 +79,7 @@
      <!-- Graph Visualization Section -->
      <widget class="QWidget" name="graphWidget" native="true">
       <property name="styleSheet">
-       <string>background-color:white;</string>
+       <string>background-color:grey;</string>
       </property>
      </widget>
     </item>
