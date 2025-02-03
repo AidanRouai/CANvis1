@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CAN OBD2 Data Viewer</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <!-- File Selection Section -->
+     <layout class="QHBoxLayout" name="fileLayout">
+      <item>
+       <widget class="QPushButton" name="btnLoadFile">
+        <property name="text">
+         <string>Load CAN Log File</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblSelectedFile">
+        <property name="text">
+         <string>No file selected</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+
+    <item>
+     <!-- Table for Raw CAN Data -->
+     <widget class="QTableWidget" name="tableCANData">
+      <property name="columnCount">
+       <number>4</number>
+      </property>
+      <property name="horizontalHeaderLabels">
+       <stringlist>
+        <string>Timestamp</string>
+        <string>CAN ID</string>
+        <string>Data Bytes</string>
+        <string>Description</string>
+       </stringlist>
+      </property>
+     </widget>
+    </item>
+
+    <item>
+     <!-- Filter Section -->
+     <layout class="QHBoxLayout" name="filterLayout">
+      <item>
+       <widget class="QLabel" name="lblFilter">
+        <property name="text">
+         <string>Filter by ID:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEditFilterID"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnApplyFilter">
+        <property name="text">
+         <string>Apply</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+
+    <item>
+     <!-- Graph Visualization Section -->
+     <widget class="QWidget" name="graphWidget" native="true">
+      <property name="styleSheet">
+       <string>background-color:white;</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <addaction name="menuFile"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="menuFile">
+   <property name="text">
+    <string>File</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
