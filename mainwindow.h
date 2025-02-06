@@ -19,7 +19,7 @@ public:
     ~MainWindow();
 
     private slots:
-        void on_btnLoadFile_clicked();
+    void on_btnLoadFile_clicked();
     void on_btnApplyFilter_clicked();
 
 private:
