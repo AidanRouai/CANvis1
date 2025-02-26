@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>700</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,44 +16,174 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <!-- File Selection Section -->
-     <layout class="QHBoxLayout" name="fileLayout">
-      <item>
+     <widget class="QTabWidget" name="Tabs">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="CANFrames">
+       <attribute name="title">
+        <string>CAN Frames</string>
+       </attribute>
+       <widget class="QTableWidget" name="tableCANData">
+        <property name="geometry">
+         <rect>
+          <x>-5</x>
+          <y>53</y>
+          <width>1271</width>
+          <height>541</height>
+         </rect>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="columnCount">
+         <number>4</number>
+        </property>
+        <property name="horizontalHeaderLabels" stdset="0">
+         <stringlist>
+          <string>Timestamp</string>
+          <string>CAN ID</string>
+          <string>Data Bytes</string>
+          <string>Description</string>
+         </stringlist>
+        </property>
+        <attribute name="horizontalHeaderCascadingSectionResizes">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>100</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>325</number>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderHighlightSections">
+         <bool>false</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Timestamp</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>CAN ID</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>CAN Bytes</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Description</string>
+         </property>
+        </column>
+       </widget>
        <widget class="QPushButton" name="btnLoadFile">
+        <property name="geometry">
+         <rect>
+          <x>-13</x>
+          <y>0</y>
+          <width>487</width>
+          <height>26</height>
+         </rect>
+        </property>
         <property name="text">
          <string>Load CAN Log File</string>
         </property>
        </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="lblSelectedFile">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>0</y>
+          <width>487</width>
+          <height>26</height>
+         </rect>
+        </property>
         <property name="text">
          <string>No file selected</string>
         </property>
        </widget>
-      </item>
-     </layout>
-    </item>
-
-    <item>
-     <!-- Table for Raw CAN Data -->
-     <widget class="QTableWidget" name="tableCANData">
-      <property name="columnCount">
-       <number>4</number>
-      </property>
-      <property name="horizontalHeaderLabels">
-       <stringlist>
-        <string>Timestamp</string>
-        <string>CAN ID</string>
-        <string>Data Bytes</string>
-        <string>Description</string>
-       </stringlist>
-      </property>
+      </widget>
+      <widget class="QWidget" name="CANData">
+       <attribute name="title">
+        <string>CAN Data</string>
+       </attribute>
+       <widget class="QPushButton" name="btnPlay">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>25</y>
+          <width>101</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>51</red>
+              <green>209</green>
+              <blue>122</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>51</red>
+              <green>209</green>
+              <blue>122</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>51</red>
+              <green>209</green>
+              <blue>122</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="text">
+         <string>Play</string>
+        </property>
+       </widget>
+       <widget class="QSlider" name="horizontalSlider">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>30</y>
+          <width>241</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
-
     <item>
-     <!-- Filter Section -->
+     <layout class="QHBoxLayout" name="fileLayout"/>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="filterLayout">
       <item>
        <widget class="QLabel" name="lblFilter">
@@ -74,9 +204,7 @@
       </item>
      </layout>
     </item>
-
     <item>
-     <!-- Graph Visualization Section -->
      <widget class="QWidget" name="graphWidget" native="true">
       <property name="styleSheet">
        <string>background-color:grey;</string>
@@ -90,7 +218,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>1280</width>
      <height>23</height>
     </rect>
    </property>

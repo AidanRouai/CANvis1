@@ -82,5 +82,3 @@ CMakeLists.txt.user*
 /build*/
 /Logs
 /.vscode
-/cmake-build-debug
-/.idea

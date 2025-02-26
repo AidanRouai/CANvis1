@@ -151,8 +151,6 @@ void MainWindow::loadCANLogFile(const QString &filePath)
         QMessageBox::warning(this, "Unsupported File",
                              "The selected file format is not supported.");
     }
-
-    ui-> tableCANData->resizeColumnsToContents();
 }
 
 void MainWindow::on_btnApplyFilter_clicked()
@@ -179,4 +177,19 @@ void MainWindow::applyFilter(const QString &filterID)
 
     QMessageBox::information(this, "Filter Applied",
                              QString("Filter applied for ID: %1").arg(filterID));
+}
+
+void MainWindow::Play()
+{
+    int rowCount = ui->tableCANData->rowCount(); 
+
+    for (int row = 0; row < rowCount; ++row)
+    {
+        
+    }
+}
+
+void MainWindow::on_btnPlay_clicked()
+{
+
 }
