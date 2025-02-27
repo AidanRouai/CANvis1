@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QRegularExpression>
 #include <QMessageBox>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Connect buttons to their respective slots
     connect(ui->btnLoadFile, &QPushButton::clicked, this, &MainWindow::on_btnLoadFile_clicked);
     connect(ui->btnApplyFilter, &QPushButton::clicked, this, &MainWindow::on_btnApplyFilter_clicked);
+    connect(ui->btnPlay, &QPushButton::clicked, this, &MainWindow::on_btnPlay_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -185,11 +187,35 @@ void MainWindow::Play()
 
     for (int row = 0; row < rowCount; ++row)
     {
-        
+        QTableWidgetItem *item = ui->tableCANData->item(row, 2);
+        if (item)
+        {
+            QString dataBytes = item->text();
+            QStringList dataBytesList = dataBytes.split(' ');
+
+            for (int i = 0; i < dataBytesList.size(); ++i)
+            {
+                QString byte = dataBytesList[i];
+                int byteValue = byte.toInt(nullptr, 16);
+
+                // Emit a signal to update the progress bar
+                emit updateProgressBar(byteValue);
+
+                // Delay for 100 milliseconds
+                QThread::msleep(100);
+            }
+        }
     }
 }
 
 void MainWindow::on_btnPlay_clicked()
 {
-
+    if (!isPlaying){
+        isPlaying = true; 
+        ui->btnPlay->setText("Pause");
+    }
+    else{
+        isPlaying = false; 
+        ui->btnPlay->setText("Play");
+    }
 }

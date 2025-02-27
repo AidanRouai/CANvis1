@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="Tabs">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="CANFrames">
        <attribute name="title">
@@ -163,18 +163,32 @@
         <property name="text">
          <string>Play</string>
         </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
        </widget>
-       <widget class="QSlider" name="horizontalSlider">
+       <widget class="QWidget" name="gridLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>69</y>
+          <width>1241</width>
+          <height>491</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout"/>
+       </widget>
+       <widget class="QProgressBar" name="progressBar">
         <property name="geometry">
          <rect>
           <x>120</x>
           <y>30</y>
-          <width>241</width>
-          <height>21</height>
+          <width>221</width>
+          <height>23</height>
          </rect>
         </property>
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+        <property name="value">
+         <number>24</number>
         </property>
        </widget>
       </widget>
