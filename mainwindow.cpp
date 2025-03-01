@@ -6,6 +6,8 @@
 #include <QRegularExpression>
 #include <QMessageBox>
 #include <QTimer>
+#include <QApplication>
+#include <QThread>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -183,39 +185,86 @@ void MainWindow::applyFilter(const QString &filterID)
 
 void MainWindow::Play()
 {
-    int rowCount = ui->tableCANData->rowCount(); 
+    int rowCount = ui->tableCANData->rowCount();
+    if (rowCount == 0) return;
 
+    // Reset progress bar
+    ui->progressBar->setValue(0);
+    ui->progressBar->setMaximum(rowCount);
+    
+    // Store playing state in a class member variable
+    bool m_isPlaying = true;
+    
     for (int row = 0; row < rowCount; ++row)
     {
+        // Check if playback was stopped
+        if (!m_isPlaying) {
+            break;
+        }
+        
         QTableWidgetItem *item = ui->tableCANData->item(row, 2);
         if (item)
         {
             QString dataBytes = item->text();
             QStringList dataBytesList = dataBytes.split(' ');
 
-            for (int i = 0; i < dataBytesList.size(); ++i)
+            // Update progress bar with current row progress
+            ui->progressBar->setValue(row + 1);
+            
+            // Process each byte in the current row
+            for (const QString& byte : dataBytesList)
             {
-                QString byte = dataBytesList[i];
-                int byteValue = byte.toInt(nullptr, 16);
-
-                // Emit a signal to update the progress bar
-                emit updateProgressBar(byteValue);
-
-                // Delay for 100 milliseconds
-                QThread::msleep(100);
+                // Check if playback was stopped
+                if (!m_isPlaying) {
+                    break;
+                }
+                
+                bool ok;
+                int byteValue = byte.toInt(&ok, 16);
+                if (ok)
+                {
+                    // Process the byte value if needed
+                }
+            }
+            
+            // Process events to keep UI responsive
+            QApplication::processEvents();
+            
+            // Only sleep if we're still playing
+            if (m_isPlaying) {
+                QThread::msleep(100); // Add a small delay between frames
             }
         }
     }
+    
+    // If we completed playback naturally (not paused)
+    if (m_isPlaying) {
+        m_isPlaying = false;
+        ui->btnPlay->setText("Play");
+        ui->btnPlay->setStyleSheet("background-color: green");
+    }
+
 }
 
-void MainWindow::on_btnPlay_clicked()
+void MainWindow::on_btnPlay_clicked(m_isPlaying)
 {
-    if (!isPlaying){
-        isPlaying = true; 
+    if (!m_isPlaying) {
+        // Start playback
         ui->btnPlay->setText("Pause");
+        ui->btnPlay->setStyleSheet("background-color: red");
+        
+        // Start playback in a separate thread to keep UI responsive
+        QThread* thread = QThread::create([this]() {
+            Play();
+        });
+        
+        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+        thread->start();
     }
-    else{
-        isPlaying = false; 
+    else {
+        // Stop playback
+        m_isPlaying = false;
         ui->btnPlay->setText("Play");
+        ui->btnPlay->setStyleSheet("background-color: green");
     }
 }
