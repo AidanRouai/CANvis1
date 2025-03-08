@@ -8,10 +8,15 @@
 #include <QTimer>
 #include <QApplication>
 #include <QThread>
+#include <QElapsedTimer> 
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , playTimer(new QTimer(this))
+    , currentRow(0)
+    , isPlaying(false)
 {
     ui->setupUi(this);
 
@@ -19,6 +24,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnLoadFile, &QPushButton::clicked, this, &MainWindow::on_btnLoadFile_clicked);
     connect(ui->btnApplyFilter, &QPushButton::clicked, this, &MainWindow::on_btnApplyFilter_clicked);
     connect(ui->btnPlay, &QPushButton::clicked, this, &MainWindow::on_btnPlay_clicked);
+    
+    // Connect timer to update slot
+    connect(playTimer, &QTimer::timeout, this, &MainWindow::updateTableRow);
+    
+    // Set timer interval (100ms for smooth updates)
+    playTimer->setInterval(100);
+    
+    // Initialize current frame table
+    ui->currentFrameTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    clickTimer.start();
 }
 
 MainWindow::~MainWindow()
@@ -28,6 +44,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnLoadFile_clicked()
 {
+    if (clickTimer.elapsed() < 300) {
+        return;
+    }
     // Open file dialog with filters for .log and .csv files
     QString filePath = QFileDialog::getOpenFileName(this, "Open CAN Log File", "",
                                                     "Log Files (*.log);;CSV Files (*.csv);;All Files (*)");
@@ -37,6 +56,8 @@ void MainWindow::on_btnLoadFile_clicked()
         ui->lblSelectedFile->setText(filePath); // Display selected file in the label
         loadCANLogFile(filePath);              // Parse the selected file
     }
+
+    clickTimer.restart();
 }
 
 void MainWindow::loadCANLogFile(const QString &filePath)
@@ -55,6 +76,9 @@ void MainWindow::loadCANLogFile(const QString &filePath)
 
         // Clear existing data in the table
         ui->tableCANData->setRowCount(0);
+        ui->currentFrameTable->clearContents();
+        currentRow = 0;
+        ui->progressBar->setValue(0);
 
         QTextStream in(&file);
         int rowCount = 0;
@@ -112,6 +136,9 @@ void MainWindow::loadCANLogFile(const QString &filePath)
 
         // Clear the existing data in the table
         ui->tableCANData->setRowCount(0);
+        ui->currentFrameTable->clearContents();
+        currentRow = 0;
+        ui->progressBar->setValue(0);
 
         QTextStream in(&file);
         int rowCount = 0;
@@ -159,12 +186,19 @@ void MainWindow::loadCANLogFile(const QString &filePath)
 
 void MainWindow::on_btnApplyFilter_clicked()
 {
+    if (clickTimer.elapsed() < 300) {
+        return;
+    }
     QString filterID = ui->lineEditFilterID->text();
     applyFilter(filterID);
+
+    clickTimer.restart();
+
 }
 
 void MainWindow::applyFilter(const QString &filterID)
 {
+
     // Filter table rows based on the provided filter ID
     int rowCount = ui->tableCANData->rowCount();
 
@@ -185,86 +219,60 @@ void MainWindow::applyFilter(const QString &filterID)
 
 void MainWindow::Play()
 {
-    int rowCount = ui->tableCANData->rowCount();
-    if (rowCount == 0) return;
-
-    // Reset progress bar
-    ui->progressBar->setValue(0);
-    ui->progressBar->setMaximum(rowCount);
-    
-    // Store playing state in a class member variable
-    bool m_isPlaying = true;
-    
-    for (int row = 0; row < rowCount; ++row)
-    {
-        // Check if playback was stopped
-        if (!m_isPlaying) {
-            break;
+    if (!isPlaying) {
+        // Start playing
+        if (currentRow >= ui->tableCANData->rowCount()) {
+            currentRow = 0;
+            ui->progressBar->setValue(0);
         }
-        
-        QTableWidgetItem *item = ui->tableCANData->item(row, 2);
-        if (item)
-        {
-            QString dataBytes = item->text();
-            QStringList dataBytesList = dataBytes.split(' ');
-
-            // Update progress bar with current row progress
-            ui->progressBar->setValue(row + 1);
-            
-            // Process each byte in the current row
-            for (const QString& byte : dataBytesList)
-            {
-                // Check if playback was stopped
-                if (!m_isPlaying) {
-                    break;
-                }
-                
-                bool ok;
-                int byteValue = byte.toInt(&ok, 16);
-                if (ok)
-                {
-                    // Process the byte value if needed
-                }
-            }
-            
-            // Process events to keep UI responsive
-            QApplication::processEvents();
-            
-            // Only sleep if we're still playing
-            if (m_isPlaying) {
-                QThread::msleep(100); // Add a small delay between frames
-            }
-        }
+        playTimer->start();
+        ui->btnPlay->setText("⏸");
+    } else {
+        // Pause playing
+        playTimer->stop();
+        ui->btnPlay->setText("▶");
     }
-    
-    // If we completed playback naturally (not paused)
-    if (m_isPlaying) {
-        m_isPlaying = false;
-        ui->btnPlay->setText("Play");
-        ui->btnPlay->setStyleSheet("background-color: green");
-    }
-
+    isPlaying = !isPlaying;
 }
 
-void MainWindow::on_btnPlay_clicked(m_isPlaying)
+void MainWindow::on_btnPlay_clicked()
 {
-    if (!m_isPlaying) {
-        // Start playback
-        ui->btnPlay->setText("Pause");
-        ui->btnPlay->setStyleSheet("background-color: red");
-        
-        // Start playback in a separate thread to keep UI responsive
-        QThread* thread = QThread::create([this]() {
-            Play();
-        });
-        
-        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-        thread->start();
+    if (clickTimer.elapsed() < 300) {
+        return;
     }
-    else {
-        // Stop playback
-        m_isPlaying = false;
-        ui->btnPlay->setText("Play");
-        ui->btnPlay->setStyleSheet("background-color: green");
+    Play();
+
+    clickTimer.restart();
+}
+
+void MainWindow::updateTableRow()
+{
+    int totalRows = ui->tableCANData->rowCount();
+    if (currentRow < totalRows) {
+        // Update progress bar
+        int progressPercent = (currentRow * 100) / totalRows;
+        ui->progressBar->setValue(progressPercent);
+        
+        // Highlight current row in main table
+        ui->tableCANData->selectRow(currentRow);
+        ui->tableCANData->scrollTo(ui->tableCANData->model()->index(currentRow, 0));
+        
+        // Update current frame table
+        for (int col = 0; col < ui->tableCANData->columnCount(); col++) {
+            QTableWidgetItem* sourceItem = ui->tableCANData->item(currentRow, col);
+            if (sourceItem) {
+                QTableWidgetItem* newItem = new QTableWidgetItem(sourceItem->text());
+                ui->currentFrameTable->setItem(0, col, newItem);
+            }
+        }
+        
+        currentRow++;
+    } else {
+        // Stop at the end
+        playTimer->stop();
+        ui->btnPlay->setText("▶");
+        isPlaying = false;
+        currentRow = 0;
+        ui->progressBar->setValue(100);
     }
 }
