@@ -227,10 +227,13 @@ void MainWindow::Play()
         }
         playTimer->start();
         ui->btnPlay->setText("⏸");
+        ui->btnPlay->setStyleSheet("background-color: red;"); 
     } else {
         // Pause playing
         playTimer->stop();
         ui->btnPlay->setText("▶");
+        ui->btnPlay->setStyleSheet("background-color: green;");
+
     }
     isPlaying = !isPlaying;
 }
@@ -276,3 +279,47 @@ void MainWindow::updateTableRow()
         ui->progressBar->setValue(100);
     }
 }
+
+void MainWindow::on_btnFF_clicked()
+{
+    if (clickTimer.elapsed() < 300) {
+        return;
+    }
+
+    // Cycle through playback speeds: 1x, 2x, 4x, 8x, 16x
+    switch (playbackSpeed) {
+        case 1:
+            playbackSpeed = 2;
+            ui->btnFF->setText("2x");
+            qDebug() << "2x";
+            break;
+        case 2:
+            playbackSpeed = 4;
+            ui->btnFF->setText("4x");
+            qDebug() << "4x";
+            break;
+        case 3:
+            playbackSpeed = 8;
+            ui->btnFF->setText("8x");
+            qDebug() << "8x";
+            break;
+        case 4:
+            playbackSpeed = 16;
+            ui->btnFF->setText("16x");
+            qDebug() << "16x";
+            break;
+        case 5:
+            playbackSpeed = 1;
+            ui->btnFF->setText("1x");
+            qDebug() << "1x";
+            break;
+    }
+
+
+    // Adjust the timer interval based on the playback speed
+    playTimer->setInterval(100 / playbackSpeed);
+
+    clickTimer.restart();
+
+}
+

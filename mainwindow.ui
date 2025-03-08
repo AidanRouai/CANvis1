@@ -175,7 +175,7 @@
             <x>120</x>
             <y>30</y>
             <width>221</width>
-            <height>23</height>
+            <height>21</height>
            </rect>
           </property>
           <property name="value">
@@ -238,6 +238,19 @@
             <string>Description</string>
            </property>
           </column>
+         </widget>
+         <widget class="QPushButton" name="btnFF">
+          <property name="geometry">
+           <rect>
+            <x>350</x>
+            <y>25</y>
+            <width>101</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>▶▶</string>
+          </property>
          </widget>
         </widget>
        </widget>

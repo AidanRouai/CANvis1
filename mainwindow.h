@@ -24,6 +24,7 @@ private slots:
     void on_btnLoadFile_clicked();
     void on_btnApplyFilter_clicked();
     void on_btnPlay_clicked();
+    void on_btnFF_clicked();
     void updateTableRow();
 
 private:
@@ -36,6 +37,7 @@ private:
     int currentRow;
     bool isPlaying;
     QElapsedTimer clickTimer; 
+    int playbackSpeed; 
 
 };
 
