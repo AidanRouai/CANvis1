@@ -8,8 +8,9 @@
 #include <QTimer>
 #include <QApplication>
 #include <QThread>
-#include <QElapsedTimer> 
-
+#include <QElapsedTimer>
+#include <QLabel>
+#include <QGridLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
     , playTimer(new QTimer(this))
     , currentRow(0)
     , isPlaying(false)
+    , playbackSpeed(1) // Initialize playback speed
+    , gridLayout(new QGridLayout()) // Initialize grid layout
 {
     ui->setupUi(this);
 
@@ -24,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnLoadFile, &QPushButton::clicked, this, &MainWindow::on_btnLoadFile_clicked);
     connect(ui->btnApplyFilter, &QPushButton::clicked, this, &MainWindow::on_btnApplyFilter_clicked);
     connect(ui->btnPlay, &QPushButton::clicked, this, &MainWindow::on_btnPlay_clicked);
+    connect(ui->btnFF, &QPushButton::clicked, this, &MainWindow::on_btnFF_clicked);
     
     // Connect timer to update slot
     connect(playTimer, &QTimer::timeout, this, &MainWindow::updateTableRow);
@@ -34,7 +38,11 @@ MainWindow::MainWindow(QWidget *parent)
     // Initialize current frame table
     ui->currentFrameTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
+    // Initialize click timer
     clickTimer.start();
+
+    // Set up the grid layout
+    ui->centralwidget->setLayout(gridLayout);
 }
 
 MainWindow::~MainWindow()
@@ -227,13 +235,12 @@ void MainWindow::Play()
         }
         playTimer->start();
         ui->btnPlay->setText("⏸");
-        ui->btnPlay->setStyleSheet("background-color: red;"); 
+        ui->btnPlay->setStyleSheet("background-color: green;"); // Change to green when playing
     } else {
         // Pause playing
         playTimer->stop();
         ui->btnPlay->setText("▶");
-        ui->btnPlay->setStyleSheet("background-color: green;");
-
+        ui->btnPlay->setStyleSheet("background-color: red;"); // Change to red when paused
     }
     isPlaying = !isPlaying;
 }
@@ -243,24 +250,51 @@ void MainWindow::on_btnPlay_clicked()
     if (clickTimer.elapsed() < 300) {
         return;
     }
+
     Play();
 
     clickTimer.restart();
+}
+
+void MainWindow::updateLabel(const QString &canID, const QString &dataBytes)
+{
+    // Check if the label for the CAN ID already exists
+    if (!canIDLabelMap.contains(canID)) {
+        // Create a new label for the CAN ID
+        QLabel *label = new QLabel(this);
+        label->setFixedSize(50, 50);
+        label->setStyleSheet("background-color: red; border-radius: 25px;");
+        label->setAlignment(Qt::AlignCenter);
+        label->setText(canID);
+        canIDLabelMap.insert(canID, label);
+
+        // Add the label to the grid layout
+        int row = canIDLabelMap.size() / 5; // 5 labels per row
+        int col = canIDLabelMap.size() % 5;
+        gridLayout->addWidget(label, row, col);
+    }
+
+    // Get the label for the CAN ID
+    QLabel *label = canIDLabelMap.value(canID);
+
+    // Check the value of dataBytes
+    if (dataBytes.toInt() != 0) {
+        // Flash the label green
+        label->setStyleSheet("background-color: green; border-radius: 25px;");
+        QTimer::singleShot(500, [label]() {
+            label->setStyleSheet("background-color: red; border-radius: 25px;");
+        });
+    }
 }
 
 void MainWindow::updateTableRow()
 {
     int totalRows = ui->tableCANData->rowCount();
     if (currentRow < totalRows) {
-        // Update progress bar
         int progressPercent = (currentRow * 100) / totalRows;
         ui->progressBar->setValue(progressPercent);
-        
-        // Highlight current row in main table
         ui->tableCANData->selectRow(currentRow);
         ui->tableCANData->scrollTo(ui->tableCANData->model()->index(currentRow, 0));
-        
-        // Update current frame table
         for (int col = 0; col < ui->tableCANData->columnCount(); col++) {
             QTableWidgetItem* sourceItem = ui->tableCANData->item(currentRow, col);
             if (sourceItem) {
@@ -268,10 +302,16 @@ void MainWindow::updateTableRow()
                 ui->currentFrameTable->setItem(0, col, newItem);
             }
         }
-        
+
+        // Update the graph with the new data
+        QTableWidgetItem* canIDItem = ui->tableCANData->item(currentRow, 1);
+        QTableWidgetItem* dataBytesItem = ui->tableCANData->item(currentRow, 2);
+        if (canIDItem && dataBytesItem) {
+            updateLabel(canIDItem->text(), dataBytesItem->text());
+        }
+
         currentRow++;
     } else {
-        // Stop at the end
         playTimer->stop();
         ui->btnPlay->setText("▶");
         isPlaying = false;
@@ -286,40 +326,43 @@ void MainWindow::on_btnFF_clicked()
         return;
     }
 
-    // Cycle through playback speeds: 1x, 2x, 4x, 8x, 16x
+    FastForward();
+
+    clickTimer.restart();
+}
+
+void MainWindow::FastForward()
+{
+        // Cycle through playback speeds: 1x, 2x, 4x, 8x, 16x
     switch (playbackSpeed) {
         case 1:
             playbackSpeed = 2;
             ui->btnFF->setText("2x");
-            qDebug() << "2x";
             break;
         case 2:
             playbackSpeed = 4;
             ui->btnFF->setText("4x");
-            qDebug() << "4x";
-            break;
-        case 3:
-            playbackSpeed = 8;
-            ui->btnFF->setText("8x");
-            qDebug() << "8x";
             break;
         case 4:
+            playbackSpeed = 8;
+            ui->btnFF->setText("8x");
+            break;
+        case 8:
             playbackSpeed = 16;
             ui->btnFF->setText("16x");
-            qDebug() << "16x";
             break;
-        case 5:
+        case 16:
+            playbackSpeed = 32;
+            ui->btnFF->setText("32x");
+            break;
+        default: 
             playbackSpeed = 1;
             ui->btnFF->setText("1x");
-            qDebug() << "1x";
             break;
     }
-
 
     // Adjust the timer interval based on the playback speed
     playTimer->setInterval(100 / playbackSpeed);
 
     clickTimer.restart();
-
 }
-

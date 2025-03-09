@@ -68,3 +68,6 @@ install(TARGETS CANvis1
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(CANvis1)
 endif()
+
+find_package(Qt6 REQUIRED COMPONENTS Charts)
+target_link_libraries(CANvis1 PRIVATE Qt${QT_VERSION_MAJOR}::Charts)

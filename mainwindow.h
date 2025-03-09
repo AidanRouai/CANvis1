@@ -7,6 +7,9 @@
 #include <QTableWidgetItem>
 #include <QTimer>
 #include <QElapsedTimer>
+#include <QLabel>
+#include <QMap>
+#include <QGridLayout> 
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,6 +29,8 @@ private slots:
     void on_btnPlay_clicked();
     void on_btnFF_clicked();
     void updateTableRow();
+    void FastForward();
+    void updateLabel(const QString &canID, const QString &dataBytes);
 
 private:
     Ui::MainWindow *ui;
@@ -39,6 +44,8 @@ private:
     QElapsedTimer clickTimer; 
     int playbackSpeed; 
 
+    QMap<QString, QLabel*> canIDLabelMap; // Map to store labels for each CAN ID
+    QGridLayout *gridLayout; 
 };
 
 #endif // MAINWINDOW_H
