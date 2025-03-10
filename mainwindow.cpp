@@ -263,7 +263,11 @@ void MainWindow::updateLabel(const QString &canID, const QString &dataBytes)
         label->setAlignment(Qt::AlignCenter);
         label->setText(canID);
         canIDLabelMap.insert(canID, label);
-        ui->gridLayout->addWidget(label); 
+
+        int index = canIDLabelMap.size() - 1;
+        int row = index / 5;
+        int col = index % 5;
+        ui->gridLayout_2->addWidget(label, row, col); 
     }
 
     // Get the label for the CAN ID

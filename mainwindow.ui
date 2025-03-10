@@ -20,7 +20,7 @@
       <item>
        <widget class="QTabWidget" name="Tabs">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="CANFrames">
          <attribute name="title">
@@ -254,6 +254,17 @@
           <property name="autoDefault">
            <bool>true</bool>
           </property>
+         </widget>
+         <widget class="QWidget" name="gridLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>9</x>
+            <y>159</y>
+            <width>1241</width>
+            <height>411</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2" rowstretch="0"/>
          </widget>
         </widget>
        </widget>
