@@ -14,13 +14,13 @@
    <string>CAN OBD2 Data Viewer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="gridLayout">
     <item>
      <layout class="QHBoxLayout" name="fileLayout">
       <item>
        <widget class="QTabWidget" name="Tabs">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="CANFrames">
          <attribute name="title">

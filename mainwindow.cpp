@@ -10,7 +10,6 @@
 #include <QThread>
 #include <QElapsedTimer>
 #include <QLabel>
-#include <QGridLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     , currentRow(0)
     , isPlaying(false)
     , playbackSpeed(1) // Initialize playback speed
-    , gridLayout(new QGridLayout()) // Initialize grid layout
 {
     ui->setupUi(this);
 
@@ -41,8 +39,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Initialize click timer
     clickTimer.start();
 
-    // Set up the grid layout
-    ui->centralwidget->setLayout(gridLayout);
 }
 
 MainWindow::~MainWindow()
@@ -267,11 +263,7 @@ void MainWindow::updateLabel(const QString &canID, const QString &dataBytes)
         label->setAlignment(Qt::AlignCenter);
         label->setText(canID);
         canIDLabelMap.insert(canID, label);
-
-        // Add the label to the grid layout
-        int row = canIDLabelMap.size() / 5; // 5 labels per row
-        int col = canIDLabelMap.size() % 5;
-        gridLayout->addWidget(label, row, col);
+        ui->gridLayout->addWidget(label); 
     }
 
     // Get the label for the CAN ID
@@ -327,8 +319,6 @@ void MainWindow::on_btnFF_clicked()
     }
 
     FastForward();
-
-    clickTimer.restart();
 }
 
 void MainWindow::FastForward()
