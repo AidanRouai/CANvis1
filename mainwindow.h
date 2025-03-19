@@ -27,7 +27,9 @@ private slots:
     void on_btnLoadFile_clicked();
     void on_btnApplyFilter_clicked();
     void on_btnPlay_clicked();
+    void on_btnPlay_2_clicked();
     void on_btnFF_clicked();
+    void on_btnFF_2_clicked();
     void updateTableRow();
     void FastForward();
     void updateLabel(const QString &canID, const QString &dataBytes);
@@ -44,7 +46,7 @@ private:
     QElapsedTimer clickTimer; 
     int playbackSpeed; 
 
-    QMap<QString, QLabel*> canIDLabelMap; // Map to store labels for each CAN ID
+    QMap<QString, QLineEdit*> canIDLabelMap; // Map to store editable labels for each CAN ID
     QGridLayout *gridLayout; 
 };
 

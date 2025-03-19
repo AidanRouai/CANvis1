@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>720</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CAN OBD2 Data Viewer</string>
+   <string>CAN Frame Visualizer</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="gridLayout">
@@ -29,11 +29,17 @@
          <widget class="QTableWidget" name="tableCANData">
           <property name="geometry">
            <rect>
-            <x>-5</x>
-            <y>53</y>
-            <width>1271</width>
-            <height>541</height>
+            <x>5</x>
+            <y>55</y>
+            <width>1891</width>
+            <height>751</height>
            </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="alternatingRowColors">
            <bool>true</bool>
@@ -56,7 +62,7 @@
            <number>100</number>
           </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>325</number>
+           <number>472</number>
           </attribute>
           <attribute name="horizontalHeaderStretchLastSection">
            <bool>false</bool>
@@ -88,10 +94,10 @@
          <widget class="QPushButton" name="btnLoadFile">
           <property name="geometry">
            <rect>
-            <x>-13</x>
-            <y>0</y>
+            <x>470</x>
+            <y>20</y>
             <width>487</width>
-            <height>26</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="text">
@@ -101,14 +107,96 @@
          <widget class="QLabel" name="lblSelectedFile">
           <property name="geometry">
            <rect>
-            <x>480</x>
-            <y>0</y>
+            <x>970</x>
+            <y>20</y>
             <width>487</width>
-            <height>26</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="text">
            <string>No file selected</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btnPlay_2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>101</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="palette">
+           <palette>
+            <active>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>51</red>
+                <green>209</green>
+                <blue>122</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>51</red>
+                <green>209</green>
+                <blue>122</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>51</red>
+                <green>209</green>
+                <blue>122</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
+           </palette>
+          </property>
+          <property name="text">
+           <string>▶</string>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QProgressBar" name="progressBar_2">
+          <property name="geometry">
+           <rect>
+            <x>115</x>
+            <y>20</y>
+            <width>221</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btnFF_2">
+          <property name="geometry">
+           <rect>
+            <x>340</x>
+            <y>20</y>
+            <width>101</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>1x</string>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
           </property>
          </widget>
         </widget>
@@ -120,7 +208,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>25</y>
+            <y>20</y>
             <width>101</width>
             <height>31</height>
            </rect>
@@ -172,10 +260,10 @@
          <widget class="QProgressBar" name="progressBar">
           <property name="geometry">
            <rect>
-            <x>120</x>
-            <y>30</y>
+            <x>115</x>
+            <y>20</y>
             <width>221</width>
-            <height>21</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="value">
@@ -187,7 +275,7 @@
            <rect>
             <x>10</x>
             <y>70</y>
-            <width>1241</width>
+            <width>1881</width>
             <height>80</height>
            </rect>
           </property>
@@ -215,7 +303,7 @@
            <number>100</number>
           </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>325</number>
+           <number>466</number>
           </attribute>
           <row/>
           <column>
@@ -242,8 +330,8 @@
          <widget class="QPushButton" name="btnFF">
           <property name="geometry">
            <rect>
-            <x>350</x>
-            <y>25</y>
+            <x>340</x>
+            <y>20</y>
             <width>101</width>
             <height>31</height>
            </rect>
@@ -260,11 +348,18 @@
            <rect>
             <x>9</x>
             <y>159</y>
-            <width>1241</width>
-            <height>411</height>
+            <width>1891</width>
+            <height>771</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="gridLayout_2" rowstretch="0"/>
+          <layout class="QGridLayout" name="gridLayout_2" rowstretch="0">
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="horizontalSpacing">
+            <number>0</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </widget>
@@ -306,7 +401,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1920</width>
      <height>23</height>
     </rect>
    </property>

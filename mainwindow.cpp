@@ -25,7 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnLoadFile, &QPushButton::clicked, this, &MainWindow::on_btnLoadFile_clicked);
     connect(ui->btnApplyFilter, &QPushButton::clicked, this, &MainWindow::on_btnApplyFilter_clicked);
     connect(ui->btnPlay, &QPushButton::clicked, this, &MainWindow::on_btnPlay_clicked);
+    connect(ui->btnPlay_2, &QPushButton::clicked, this, &MainWindow::on_btnPlay_2_clicked);
     connect(ui->btnFF, &QPushButton::clicked, this, &MainWindow::on_btnFF_clicked);
+    connect(ui->btnFF_2, &QPushButton::clicked, this, &MainWindow::on_btnFF_2_clicked);
     
     // Connect timer to update slot
     connect(playTimer, &QTimer::timeout, this, &MainWindow::updateTableRow);
@@ -83,6 +85,7 @@ void MainWindow::loadCANLogFile(const QString &filePath)
         ui->currentFrameTable->clearContents();
         currentRow = 0;
         ui->progressBar->setValue(0);
+        ui->progressBar_2->setValue(0);
 
         QTextStream in(&file);
         int rowCount = 0;
@@ -143,6 +146,7 @@ void MainWindow::loadCANLogFile(const QString &filePath)
         ui->currentFrameTable->clearContents();
         currentRow = 0;
         ui->progressBar->setValue(0);
+        ui->progressBar_2->setValue(0);
 
         QTextStream in(&file);
         int rowCount = 0;
@@ -228,15 +232,20 @@ void MainWindow::Play()
         if (currentRow >= ui->tableCANData->rowCount()) {
             currentRow = 0;
             ui->progressBar->setValue(0);
+            ui->progressBar_2->setValue(0);
         }
         playTimer->start();
         ui->btnPlay->setText("⏸");
-        ui->btnPlay->setStyleSheet("background-color: green;"); // Change to green when playing
+        ui->btnPlay_2->setText("⏸");
+        ui->btnPlay->setStyleSheet("background-color: red;"); // Change to green when playing
+        ui->btnPlay_2->setStyleSheet("background-color: red;"); 
     } else {
         // Pause playing
         playTimer->stop();
         ui->btnPlay->setText("▶");
-        ui->btnPlay->setStyleSheet("background-color: red;"); // Change to red when paused
+        ui->btnPlay_2->setText("▶");
+        ui->btnPlay->setStyleSheet("background-color: green;"); // Change to red when paused
+        ui->btnPlay_2->setStyleSheet("background-color: green;");
     }
     isPlaying = !isPlaying;
 }
@@ -252,33 +261,48 @@ void MainWindow::on_btnPlay_clicked()
     clickTimer.restart();
 }
 
+void MainWindow:: on_btnPlay_2_clicked()
+{
+    if (clickTimer.elapsed() < 300) {
+        return;
+    }
+
+    Play();
+
+    clickTimer.restart();
+}
+
 void MainWindow::updateLabel(const QString &canID, const QString &dataBytes)
 {
     // Check if the label for the CAN ID already exists
     if (!canIDLabelMap.contains(canID)) {
         // Create a new label for the CAN ID
-        QLabel *label = new QLabel(this);
-        label->setFixedSize(50, 50);
-        label->setStyleSheet("background-color: red; border-radius: 25px;");
-        label->setAlignment(Qt::AlignCenter);
-        label->setText(canID);
-        canIDLabelMap.insert(canID, label);
+        QLineEdit *lineEdit = new QLineEdit(this);
+        lineEdit->setFixedSize(100, 100);
+        lineEdit->setStyleSheet("background-color: red; border-radius: 60px;");
+        lineEdit->setAlignment(Qt::AlignCenter);
+        lineEdit->setText(canID);
+        canIDLabelMap.insert(canID, lineEdit);
+
+        if (lineEdit->text().isEmpty()) {
+            lineEdit->setText(canID);
+        }
 
         int index = canIDLabelMap.size() - 1;
-        int row = index / 5;
-        int col = index % 5;
-        ui->gridLayout_2->addWidget(label, row, col); 
+        int row = index / 6;
+        int col = index % 6;
+        ui->gridLayout_2->addWidget(lineEdit, row, col);
     }
 
     // Get the label for the CAN ID
-    QLabel *label = canIDLabelMap.value(canID);
+    QLineEdit *lineEdit = canIDLabelMap.value(canID);
 
     // Check the value of dataBytes
     if (dataBytes.toInt() != 0) {
         // Flash the label green
-        label->setStyleSheet("background-color: green; border-radius: 25px;");
-        QTimer::singleShot(500, [label]() {
-            label->setStyleSheet("background-color: red; border-radius: 25px;");
+        lineEdit->setStyleSheet("background-color: green; border-radius: 25px;");
+        QTimer::singleShot(500, [lineEdit]() {
+            lineEdit->setStyleSheet("background-color: red; border-radius: 25px;");
         });
     }
 }
@@ -289,6 +313,7 @@ void MainWindow::updateTableRow()
     if (currentRow < totalRows) {
         int progressPercent = (currentRow * 100) / totalRows;
         ui->progressBar->setValue(progressPercent);
+        ui->progressBar_2->setValue(progressPercent);
         ui->tableCANData->selectRow(currentRow);
         ui->tableCANData->scrollTo(ui->tableCANData->model()->index(currentRow, 0));
         for (int col = 0; col < ui->tableCANData->columnCount(); col++) {
@@ -310,9 +335,11 @@ void MainWindow::updateTableRow()
     } else {
         playTimer->stop();
         ui->btnPlay->setText("▶");
+        ui->btnPlay_2->setText("▶");
         isPlaying = false;
         currentRow = 0;
         ui->progressBar->setValue(100);
+        ui-progressBar_2->setValue(100);
     }
 }
 
@@ -323,35 +350,54 @@ void MainWindow::on_btnFF_clicked()
     }
 
     FastForward();
+
+    clickTimer.restart();
+}
+
+void MainWindow:: on_btnFF_2_clicked()
+{
+    if (clickTimer.elapsed() < 300) {
+        return;
+    }
+
+    FastForward();
+
+    clickTimer.restart();
 }
 
 void MainWindow::FastForward()
 {
-        // Cycle through playback speeds: 1x, 2x, 4x, 8x, 16x
+        // Cycle through playback speeds: 1x, 2x, 4x, 8x, 16x, 32x
     switch (playbackSpeed) {
         case 1:
             playbackSpeed = 2;
             ui->btnFF->setText("2x");
+            ui->btnFF_2->setText("2x");
             break;
         case 2:
             playbackSpeed = 4;
             ui->btnFF->setText("4x");
+            ui->btnFF_2->setText("4x");
             break;
         case 4:
             playbackSpeed = 8;
             ui->btnFF->setText("8x");
+            ui->btnFF_2->setText("8x");
             break;
         case 8:
             playbackSpeed = 16;
             ui->btnFF->setText("16x");
+            ui->btnFF_2->setText("16x");
             break;
         case 16:
             playbackSpeed = 32;
             ui->btnFF->setText("32x");
+            ui->btnFF_2->setText("32x");
             break;
         default: 
             playbackSpeed = 1;
             ui->btnFF->setText("1x");
+            ui->btnFF_2->setText("1x");
             break;
     }
 
