@@ -221,6 +221,14 @@ void MainWindow::applyFilter(const QString &filterID)
         }
     }
 
+    for (int i = 0; i < ui->gridLayout_2->count(); i++) {
+        QLineEdit *lineEdit = qobject_cast<QLineEdit*>(ui->gridLayout_2->itemAt(i)->widget());
+        if (lineEdit) {
+            bool matches = lineEdit->text().contains(filterID, Qt::CaseInsensitive);
+            lineEdit->setHidden(!matches);
+        }
+    }
+
     QMessageBox::information(this, "Filter Applied",
                              QString("Filter applied for ID: %1").arg(filterID));
 }
@@ -237,14 +245,14 @@ void MainWindow::Play()
         playTimer->start();
         ui->btnPlay->setText("⏸");
         ui->btnPlay_2->setText("⏸");
-        ui->btnPlay->setStyleSheet("background-color: red;"); // Change to green when playing
+        ui->btnPlay->setStyleSheet("background-color: red;"); 
         ui->btnPlay_2->setStyleSheet("background-color: red;"); 
     } else {
         // Pause playing
         playTimer->stop();
         ui->btnPlay->setText("▶");
         ui->btnPlay_2->setText("▶");
-        ui->btnPlay->setStyleSheet("background-color: green;"); // Change to red when paused
+        ui->btnPlay->setStyleSheet("background-color: green;"); 
         ui->btnPlay_2->setStyleSheet("background-color: green;");
     }
     isPlaying = !isPlaying;
@@ -278,8 +286,8 @@ void MainWindow::updateLabel(const QString &canID, const QString &dataBytes)
     if (!canIDLabelMap.contains(canID)) {
         // Create a new label for the CAN ID
         QLineEdit *lineEdit = new QLineEdit(this);
-        lineEdit->setFixedSize(100, 100);
-        lineEdit->setStyleSheet("background-color: red; border-radius: 60px;");
+        lineEdit->setFixedSize(50, 50);
+        lineEdit->setStyleSheet("background-color: red; border-radius: 25px;");
         lineEdit->setAlignment(Qt::AlignCenter);
         lineEdit->setText(canID);
         canIDLabelMap.insert(canID, lineEdit);
@@ -339,7 +347,7 @@ void MainWindow::updateTableRow()
         isPlaying = false;
         currentRow = 0;
         ui->progressBar->setValue(100);
-        ui-progressBar_2->setValue(100);
+        ui->progressBar_2->setValue(100);
     }
 }
 
