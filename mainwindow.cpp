@@ -292,10 +292,6 @@ void MainWindow::updateLabel(const QString &canID, const QString &dataBytes)
         lineEdit->setText(canID);
         canIDLabelMap.insert(canID, lineEdit);
 
-        if (lineEdit->text().isEmpty()) {
-            lineEdit->setText(canID);
-        }
-
         int index = canIDLabelMap.size() - 1;
         int row = index / 6;
         int col = index % 6;
@@ -306,13 +302,11 @@ void MainWindow::updateLabel(const QString &canID, const QString &dataBytes)
     QLineEdit *lineEdit = canIDLabelMap.value(canID);
 
     // Check the value of dataBytes
-    if (dataBytes.toInt() != 0) {
-        // Flash the label green
-        lineEdit->setStyleSheet("background-color: green; border-radius: 25px;");
-        QTimer::singleShot(500, [lineEdit]() {
-            lineEdit->setStyleSheet("background-color: red; border-radius: 25px;");
+    // Flash the label green
+    lineEdit->setStyleSheet("background-color: green; border-radius: 25px;");
+    QTimer::singleShot(500, [lineEdit]() {
+    lineEdit->setStyleSheet("background-color: red; border-radius: 25px;");
         });
-    }
 }
 
 void MainWindow::updateTableRow()

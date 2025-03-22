@@ -507,9 +507,9 @@
       <item>
        <widget class="QTabWidget" name="Tabs">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
-        <widget class="QWidget" name="CANFrames">
+        <widget class="QWidget" name="Tab_1CANFrames">
          <attribute name="title">
           <string>CAN Frames</string>
          </attribute>
@@ -687,7 +687,7 @@
           </property>
          </widget>
         </widget>
-        <widget class="QWidget" name="CANData">
+        <widget class="QWidget" name="Tab2CANData">
          <attribute name="title">
           <string>CAN Data</string>
          </attribute>
@@ -835,7 +835,7 @@
            <rect>
             <x>9</x>
             <y>129</y>
-            <width>1891</width>
+            <width>1881</width>
             <height>801</height>
            </rect>
           </property>
@@ -873,13 +873,6 @@
        </widget>
       </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QWidget" name="graphWidget" native="true">
-      <property name="styleSheet">
-       <string>background-color:grey;</string>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
