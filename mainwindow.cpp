@@ -301,11 +301,10 @@ void MainWindow::updateLabel(const QString &canID, const QString &dataBytes)
     // Get the label for the CAN ID
     QLineEdit *lineEdit = canIDLabelMap.value(canID);
 
-    // Check the value of dataBytes
     // Flash the label green
     lineEdit->setStyleSheet("background-color: green; border-radius: 25px;");
     QTimer::singleShot(500, [lineEdit]() {
-    lineEdit->setStyleSheet("background-color: red; border-radius: 25px;");
+        lineEdit->setStyleSheet("background-color: red; border-radius: 25px;");
         });
 }
 
