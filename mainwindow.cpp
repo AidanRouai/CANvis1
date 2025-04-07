@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "dbc/dbc_parser.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnPlay_2, &QPushButton::clicked, this, &MainWindow::on_btnPlay_2_clicked);
     connect(ui->btnFF, &QPushButton::clicked, this, &MainWindow::on_btnFF_clicked);
     connect(ui->btnFF_2, &QPushButton::clicked, this, &MainWindow::on_btnFF_2_clicked);
+    connect(ui->btnLoadDBC, &QPushButton::clicked, this, &MainWindow::on_btnLoadDBC_clicked);
     
     // Connect timer to update slot
     connect(playTimer, &QTimer::timeout, this, &MainWindow::updateTableRow);
@@ -413,8 +415,14 @@ void MainWindow::on_btnLoadDBC_clicked()
     if (clickTimer.elapsed() < 300) {
         return;
     }
-
-    LoadDBC();
+    // Open file dialog with filters for .dbc files
+    QString filePathDBC = QFileDialog::getOpenFileName(this, "Open DBC File", "",
+                                                    "DBC Files (*.dbc);;All Files (*)");
+    if (filePathDBC.isEmpty()) {
+        return;
+    }
+    ui->lblDBCFilePath->setText(filePathDBC); // Display selected file in the label
+    LoadDBC(filePathDBC);
 
     clickTimer.restart();
 }
@@ -424,35 +432,5 @@ void MainWindow::LoadDBC(const QString &filePathDBC)
     if (clickTimer.elapsed() < 300) {
         return;
     }
-    QString filePath = filePathDBC;
-
-    // If no file path is provided, open a file dialog to select a DBC file
-    if (filePath.isEmpty()) {
-        filePath = QFileDialog::getOpenFileName(this, "Open DBC File", "",
-                                                "DBC Files (*.dbc);;All Files (*)");
-    }
-
-    // Check if a file was selected
-    if (filePath.isEmpty()) {
-        QMessageBox::warning(this, "No File Selected", "Please select a valid DBC file.");
-        return;
-    }
-
-    // Attempt to open the DBC file
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, "Error", "Unable to open the DBC file.");
-        return;
-    }
-
-    // Process the DBC file (this is a placeholder for actual DBC parsing logic)
-    QTextStream in(&file);
-    QString dbcContent = in.readAll();
-    file.close();
-
-    // Display a success message (you can replace this with actual parsing logic)
-    QMessageBox::information(this, "DBC File Loaded",
-                             QString("Successfully loaded the DBC file:\n%1").arg(filePath));
-
-                                                    
+                                                
 }

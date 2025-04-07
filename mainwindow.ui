@@ -892,7 +892,7 @@
            <string>Load Database File</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="lblDBCFilePath">
           <property name="geometry">
            <rect>
             <x>970</x>
