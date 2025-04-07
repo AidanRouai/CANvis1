@@ -407,3 +407,52 @@ void MainWindow::FastForward()
 
     clickTimer.restart();
 }
+
+void MainWindow::on_btnLoadDBC_clicked()
+{
+    if (clickTimer.elapsed() < 300) {
+        return;
+    }
+
+    LoadDBC();
+
+    clickTimer.restart();
+}
+
+void MainWindow::LoadDBC(const QString &filePathDBC)
+{
+    if (clickTimer.elapsed() < 300) {
+        return;
+    }
+    QString filePath = filePathDBC;
+
+    // If no file path is provided, open a file dialog to select a DBC file
+    if (filePath.isEmpty()) {
+        filePath = QFileDialog::getOpenFileName(this, "Open DBC File", "",
+                                                "DBC Files (*.dbc);;All Files (*)");
+    }
+
+    // Check if a file was selected
+    if (filePath.isEmpty()) {
+        QMessageBox::warning(this, "No File Selected", "Please select a valid DBC file.");
+        return;
+    }
+
+    // Attempt to open the DBC file
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "Unable to open the DBC file.");
+        return;
+    }
+
+    // Process the DBC file (this is a placeholder for actual DBC parsing logic)
+    QTextStream in(&file);
+    QString dbcContent = in.readAll();
+    file.close();
+
+    // Display a success message (you can replace this with actual parsing logic)
+    QMessageBox::information(this, "DBC File Loaded",
+                             QString("Successfully loaded the DBC file:\n%1").arg(filePath));
+
+                                                    
+}

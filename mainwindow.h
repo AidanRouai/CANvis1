@@ -30,6 +30,7 @@ private slots:
     void on_btnPlay_2_clicked();
     void on_btnFF_clicked();
     void on_btnFF_2_clicked();
+    void on_btnLoadDBC_clicked();
     void updateTableRow();
     void FastForward();
     void updateLabel(const QString &canID, const QString &dataBytes);
@@ -37,6 +38,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void loadCANLogFile(const QString &filePath);
+    void LoadDBC(const QString &filePathDBC);
     void applyFilter(const QString &filterID);
     void Play();
     
@@ -47,7 +49,7 @@ private:
     int playbackSpeed; 
 
     QMap<QString, QLineEdit*> canIDLabelMap; // Map to store editable labels for each CAN ID
-    QGridLayout *gridLayout; 
+    QGridLayout *gridLayout;
 };
 
 #endif // MAINWINDOW_H

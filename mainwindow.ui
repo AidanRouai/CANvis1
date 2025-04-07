@@ -10,6 +10,12 @@
     <height>1080</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="palette">
    <palette>
     <active>
@@ -830,58 +836,74 @@
            <bool>true</bool>
           </property>
          </widget>
-         <widget class="QWidget" name="gridLayoutWidget">
+         <widget class="QScrollArea" name="scrollArea">
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>140</y>
+            <y>129</y>
             <width>1881</width>
-            <height>801</height>
+            <height>701</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="gridLayout_2" rowstretch="0">
-           <property name="rightMargin">
-            <number>0</number>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1865</width>
+             <height>699</height>
+            </rect>
            </property>
-           <property name="horizontalSpacing">
-            <number>0</number>
-           </property>
-           <item row="0" column="0" alignment="Qt::AlignmentFlag::AlignRight">
-            <widget class="QScrollArea" name="scrollArea">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="verticalScrollBarPolicy">
-              <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
-             </property>
-             <property name="widgetResizable">
-              <bool>true</bool>
-             </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>54</width>
-                <height>797</height>
-               </rect>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>100</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </widget>
-           </item>
-          </layout>
+           <widget class="QWidget" name="gridLayoutWidget">
+            <property name="geometry">
+             <rect>
+              <x>-1</x>
+              <y>-1</y>
+              <width>1881</width>
+              <height>701</height>
+             </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2"/>
+           </widget>
+          </widget>
+         </widget>
+         <widget class="QPushButton" name="btnLoadDBC">
+          <property name="geometry">
+           <rect>
+            <x>470</x>
+            <y>20</y>
+            <width>487</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Load Database File</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label">
+          <property name="geometry">
+           <rect>
+            <x>970</x>
+            <y>27</y>
+            <width>381</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>No File Selected </string>
+          </property>
          </widget>
         </widget>
        </widget>
