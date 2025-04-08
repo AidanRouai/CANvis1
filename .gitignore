@@ -82,3 +82,6 @@ CMakeLists.txt.user*
 /build*/
 /Logs
 /.vscode
+/libs
+/boost_1_87_0/ 
+boost_1_87_0.tar.gz
