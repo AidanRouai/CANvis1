@@ -30,8 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnFF, &QPushButton::clicked, this, &MainWindow::on_btnFF_clicked);
     connect(ui->btnFF_2, &QPushButton::clicked, this, &MainWindow::on_btnFF_2_clicked);
     connect(ui->btnLoadDBC, &QPushButton::clicked, this, &MainWindow::on_btnLoadDBC_clicked);
-    
-    // Connect timer to update slot
     connect(playTimer, &QTimer::timeout, this, &MainWindow::updateTableRow);
     
     // Set timer interval (100ms for smooth updates)
@@ -39,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     
     // Initialize current frame table
     ui->currentFrameTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
 
     // Initialize click timer
     clickTimer.start();
@@ -429,8 +428,10 @@ void MainWindow::on_btnLoadDBC_clicked()
 
 void MainWindow::LoadDBC(const QString &filePathDBC)
 {
-    if (clickTimer.elapsed() < 300) {
-        return;
-    }
+
                                                 
 }
+
+
+
+

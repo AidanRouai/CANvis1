@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QMap>
 #include <QGridLayout> 
+#include <QPropertyAnimation>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -46,7 +47,9 @@ private:
     int currentRow;
     bool isPlaying;
     QElapsedTimer clickTimer; 
-    int playbackSpeed; 
+    int playbackSpeed;
+    QWidget *sideBarWidget; 
+    bool isSidebarVisible;
 
     QMap<QString, QLineEdit*> canIDLabelMap; // Map to store editable labels for each CAN ID
     QGridLayout *gridLayout;
