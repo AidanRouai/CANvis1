@@ -27,7 +27,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void populateValTable(const std::string &tableName, const std::vector<std::pair<unsigned, std::string>> &valDescs);
+    void populateMessageTable(const std::map<uint32_t, std::string> &messages);
 
 private slots:
     void on_btnLoadFile_clicked();
@@ -58,13 +58,7 @@ private:
 
     QMap<QString, QLineEdit*> canIDLabelMap; // Map to store editable labels for each CAN ID
     QGridLayout *gridLayout;
-    QTableWidget *valTableWidget; // Pointer to the VAL_TABLE widget
-
-    // Declare tag_invoke as a friend function
-    friend void tag_invoke(
-        can::def_val_table_cpo, MainWindow &this_,
-        std::string table_name, std::vector<std::pair<unsigned, std::string>> val_descs
-    );
+    QTableWidget *valTableWidget; // Pointer to the VAL_TABLE widget    
 };
 
 #endif // MAINWINDOW_H
