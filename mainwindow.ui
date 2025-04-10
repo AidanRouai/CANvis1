@@ -508,8 +508,17 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="gridLayout">
+    <property name="spacing">
+     <number>6</number>
+    </property>
+    <property name="rightMargin">
+     <number>4</number>
+    </property>
     <item>
      <layout class="QHBoxLayout" name="fileLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="rightMargin">
        <number>0</number>
       </property>
@@ -854,10 +863,10 @@
            <bool>false</bool>
           </attribute>
           <attribute name="horizontalHeaderMinimumSectionSize">
-           <number>100</number>
+           <number>391</number>
           </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>391</number>
+           <number>472</number>
           </attribute>
           <row/>
           <column>
@@ -932,7 +941,7 @@
              <rect>
               <x>-1</x>
               <y>-1</y>
-              <width>1881</width>
+              <width>1591</width>
               <height>701</height>
              </rect>
             </property>
@@ -987,6 +996,12 @@
       </item>
       <item alignment="Qt::AlignmentFlag::AlignRight">
        <widget class="QWidget" name="sideBarWidget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>300</width>
@@ -1030,11 +1045,17 @@
         <widget class="QFrame" name="frame">
          <property name="geometry">
           <rect>
-           <x>-1</x>
+           <x>7</x>
            <y>29</y>
-           <width>301</width>
+           <width>291</width>
            <height>851</height>
           </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <property name="frameShape">
           <enum>QFrame::Shape::Panel</enum>
@@ -1055,29 +1076,41 @@
            <height>771</height>
           </rect>
          </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
+         </property>
+         <property name="cornerButtonEnabled">
+          <bool>false</bool>
+         </property>
          <property name="columnCount">
           <number>2</number>
          </property>
          <property name="horizontalHeaderLabels" stdset="0">
           <stringlist>
-           <string>Value</string>
-           <string>Description</string>
+           <string>Message Name</string>
+           <string>Message ID</string>
           </stringlist>
          </property>
          <attribute name="horizontalHeaderCascadingSectionResizes">
           <bool>false</bool>
          </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>145</number>
+          <number>139</number>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
          </attribute>
          <column>
           <property name="text">
-           <string>Value</string>
+           <string>Message ID</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Description</string>
+           <string>Message Name</string>
           </property>
          </column>
         </widget>
