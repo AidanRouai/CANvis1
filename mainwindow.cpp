@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "dbc/dbc_parser.h"
+#include "libs/can-utils/dbc/dbc_parser.h"
+#include "dbc_handler.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -421,15 +422,67 @@ void MainWindow::on_btnLoadDBC_clicked()
         return;
     }
     ui->lblDBCFilePath->setText(filePathDBC); // Display selected file in the label
-    LoadDBC(filePathDBC);
+    loadDBC(filePathDBC);
 
     clickTimer.restart();
 }
 
-void MainWindow::LoadDBC(const QString &filePathDBC)
+void MainWindow::loadDBC(const QString &filePathDBC)
 {
+    QFile file(filePathDBC);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "Unable to open the DBC file.");
+        return;
+    }
 
-                                                
+    QTextStream in(&file);
+    QString dbcContent = in.readAll();
+    file.close();
+
+    DBCHandler dbcHandler;
+    bool success = can::parse_dbc(dbcContent.toStdString(), std::ref(dbcHandler));
+
+    if (!success) {
+        QMessageBox::critical(this, "Error", "Failed to parse the DBC file.");
+        return;
+    }
+
+
+    if (!dbcHandler.valTables.empty()) {
+        const auto &firstTable = *dbcHandler.valTables.begin();
+        populateValTable(firstTable.first, firstTable.second);
+    } else {
+        QMessageBox::information(this, "No Value Tables", "The DBC file contains no value tables.");
+    }
+}
+
+void MainWindow::populateValTable(const std::string &tableName, const std::vector<std::pair<unsigned, std::string>> &valDescs)
+{
+    // Clear the table
+    ui->valTableWidget->setRowCount(0);
+
+    // Set the table name as the header
+    ui->valTableWidget->setHorizontalHeaderLabels({QString::fromStdString(tableName), "Description"});
+
+    // Populate the table with the value-description pairs
+    for (const auto &valDesc : valDescs)
+    {
+        int row = ui->valTableWidget->rowCount();
+        ui->valTableWidget->insertRow(row);
+
+        // Add value and description to the table
+        ui->valTableWidget->setItem(row, 0, new QTableWidgetItem(QString::number(valDesc.first)));
+        ui->valTableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(valDesc.second)));
+    }
+}
+
+namespace can {
+    void tag_invoke(
+        def_val_table_cpo, MainWindow &this_,
+        std::string table_name, std::vector<std::pair<unsigned, std::string>> val_descs
+    ) {
+        this_.populateValTable(table_name, val_descs);
+    }
 }
 
 

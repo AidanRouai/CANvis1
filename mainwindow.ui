@@ -1068,7 +1068,7 @@
           <bool>false</bool>
          </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>150</number>
+          <number>145</number>
          </attribute>
          <column>
           <property name="text">
