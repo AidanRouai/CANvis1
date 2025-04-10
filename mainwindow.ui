@@ -958,7 +958,7 @@
            <rect>
             <x>970</x>
             <y>27</y>
-            <width>381</width>
+            <width>551</width>
             <height>21</height>
            </rect>
           </property>
@@ -1045,6 +1045,41 @@
          <property name="lineWidth">
           <number>4</number>
          </property>
+        </widget>
+        <widget class="QTableWidget" name="valTableWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>100</y>
+           <width>280</width>
+           <height>771</height>
+          </rect>
+         </property>
+         <property name="columnCount">
+          <number>2</number>
+         </property>
+         <property name="horizontalHeaderLabels" stdset="0">
+          <stringlist>
+           <string>Value</string>
+           <string>Description</string>
+          </stringlist>
+         </property>
+         <attribute name="horizontalHeaderCascadingSectionResizes">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>150</number>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Description</string>
+          </property>
+         </column>
         </widget>
        </widget>
       </item>
