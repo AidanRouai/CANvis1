@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     , playTimer(new QTimer(this))
     , currentRow(0)
     , isPlaying(false)
-    , playbackSpeed(1) // Initialize playback speed
+    , playbackSpeed(1) 
 {
     ui->setupUi(this);
 

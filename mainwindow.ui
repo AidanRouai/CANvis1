@@ -561,7 +561,7 @@
             <x>5</x>
             <y>55</y>
             <width>1891</width>
-            <height>1080</height>
+            <height>775</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -573,13 +573,13 @@
           <property name="minimumSize">
            <size>
             <width>1520</width>
-            <height>1080</height>
+            <height>775</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>1920</width>
-            <height>1080</height>
+            <height>750</height>
            </size>
           </property>
           <property name="alternatingRowColors">
@@ -1160,8 +1160,8 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1566</x>
-     <y>77</y>
+     <x>1578</x>
+     <y>190</y>
     </hint>
     <hint type="destinationlabel">
      <x>1730</x>
@@ -1176,8 +1176,8 @@
    <slot>setHidden(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1556</x>
-     <y>76</y>
+     <x>1568</x>
+     <y>190</y>
     </hint>
     <hint type="destinationlabel">
      <x>1728</x>
@@ -1192,8 +1192,8 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1568</x>
-     <y>77</y>
+     <x>1580</x>
+     <y>190</y>
     </hint>
     <hint type="destinationlabel">
      <x>1667</x>
@@ -1208,8 +1208,8 @@
    <slot>setHidden(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1549</x>
-     <y>77</y>
+     <x>1561</x>
+     <y>190</y>
     </hint>
     <hint type="destinationlabel">
      <x>1669</x>
