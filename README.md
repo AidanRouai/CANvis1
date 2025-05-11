@@ -22,10 +22,6 @@ Modern vehicles rely on a network of Electronic Control Units (ECUs) that commun
 - **Data Filtering**: Filter by individual CAN IDs for focused debugging.
 - **SocketCAN Support**: Designed around the Linux-native SocketCAN `.log` format.
 
-## 📸 Screenshots
-
-![Main GUI Screenshot](https://github.com/AidanRouai/CANvis1/blob/main/assets/screenshot_main.png)
-
 ## 📂 File Inputs
 
 - **CAN Log File** (`.log` or `.csv`): SocketCAN style logs (e.g. `can0 152#F08C000000000082`)
@@ -36,21 +32,6 @@ Modern vehicles rely on a network of Electronic Control Units (ECUs) that commun
 - [Qt 6 or higher](https://www.qt.io/)
 - C++20 compiler (tested with GCC and Clang)
 - [mireo/can-utils](https://github.com/mireo/can-utils) for DBC parsing
-
-## 🧪 Testing Summary
-
-A robust unit test strategy was applied to ensure each component behaves as expected. Key functions tested include:
-- File loading/parsing
-- Playback control
-- CAN ID highlighting
-- DBC integration
-
-| Test | Description | Result |
-|------|-------------|--------|
-| Load `.log` file | Correctly parses valid log data | ✅ |
-| Filter CAN ID | Displays only filtered messages | ✅ |
-| Playback controls | Step through data with speed options | ✅ |
-| Load DBC file | Displays message names | ✅ |
 
 ## 🚀 Getting Started
 
